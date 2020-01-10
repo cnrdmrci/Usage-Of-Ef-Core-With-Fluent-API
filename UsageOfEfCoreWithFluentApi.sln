@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsageOfEfCoreWithFluentApi", "UsageOfEfCoreWithFluentApi.csproj", "{11498FB5-AA10-41EC-A740-9444494AB1B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11498FB5-AA10-41EC-A740-9444494AB1B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11498FB5-AA10-41EC-A740-9444494AB1B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11498FB5-AA10-41EC-A740-9444494AB1B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11498FB5-AA10-41EC-A740-9444494AB1B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADE2B3BE-9DB4-46E8-8579-39A9F6EEE841}
+	EndGlobalSection
+EndGlobal
