@@ -1,5 +1,5 @@
 # Fluent Api ile EntityFramework Core'un Kullanımı 
-Fluent api kullanılarak geliştirilen uygulama EntityFramework Core kütüphanesinin oldukça detaylı kullanımını ve anlatımını içermektedir.\
+Fluent api kullanılarak geliştirilen uygulama EntityFramework Core kütüphanesinin oldukça detaylı kullanımını ve anlatımını içermektedir.
 
 ### Genel Tanıtım
 Genel olarak proje içerisinde kullanılan işlemler aşağıda listelenmiştir;
