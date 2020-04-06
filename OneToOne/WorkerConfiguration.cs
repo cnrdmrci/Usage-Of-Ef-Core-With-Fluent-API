@@ -23,7 +23,7 @@ namespace EntityFrameworkCoreExamples.OneToOne
                 .HasForeignKey<ContactInfo>(x => x.WorkerId);
 
             builder.Property(x => x.FirstName).IsRequired();
-            builder.Property(x => x.LastName).HasColumnName("SoyAd").HasColumnType("varchar(max)").HasMaxLength(50);
+            //builder.Property(x => x.LastName).HasColumnName("SoyAd").HasColumnType("varchar(max)").HasMaxLength(50);
             //builder.Property(x=>x.FirstName)
             //.HasComputedColumnSql("[LastName] + ', ' + [FirstName]");
         }
