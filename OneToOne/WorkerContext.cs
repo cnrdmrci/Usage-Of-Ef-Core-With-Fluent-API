@@ -11,7 +11,9 @@ namespace EntityFrameworkCoreExamples.OneToOne
         public DbSet<ContactInfo> ContactInfo { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;initial catalog=[DATABASE];user id=[USERNAME];password=[PASSWORD];");
+            optionsBuilder
+                .UseLazyLoadingProxies()
+                .UseSqlServer(@"Server=.\SQLEXPRESS;initial catalog=[DATABASE];user id=[USERNAME];password=[PASSWORD];");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
