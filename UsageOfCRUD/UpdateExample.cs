@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using EntityFrameworkCoreExamples.ManyToMany;
 using EntityFrameworkCoreExamples.OneToMany;
 using EntityFrameworkCoreExamples.OneToOne;
+using Microsoft.EntityFrameworkCore;
 
 namespace EntityFrameworkCoreExamples.UsageExamples
 {
@@ -11,10 +13,51 @@ namespace EntityFrameworkCoreExamples.UsageExamples
     {
         public static void Run()
         {
+            changeTrackerDirtyExample();
+            changeTrackerNiceExample();
+
             oneToOneExample();
             oneToManyExample();
             manyToManyExample();
             updateOneField();
+        }
+
+        private static void changeTrackerDirtyExample()
+        {
+            using (var context = new WorkerContext())
+            {
+                //id'si 4 olan bir degerimiz olsun. Dısarıdanda alınabilir.
+                Worker worker = context.Worker.FirstOrDefault(x => x.WorkerId == 4);
+                context.Entry(worker).State = EntityState.Detached; // Disaridan gelmis gibi yaptık.
+                context.Entry(worker).State = EntityState.Modified;
+                //Durumunu modified yaparsak bu durumda tüm kolonlar güncellemeye gidecektir. 
+                //Bu da bize fazladan maliyet oluşturacaktır.
+                context.SaveChanges();
+
+                ContactInfo contactInfo = new ContactInfo() { ContactInfoId = 11, Phone = "558", WorkerId = worker.WorkerId };
+                context.ContactInfo.Update(contactInfo);
+
+                context.SaveChanges();
+            }
+        }
+
+        private static void changeTrackerNiceExample()
+        {
+            using (var context = new WorkerContext())
+            {
+                //id'si 4 olan bir degerimiz olsun. Dısarıdanda alınabilir.
+                Worker worker = context.Worker.FirstOrDefault(x => x.WorkerId == 4);
+                context.Entry(worker).State = EntityState.Detached; // Disaridan gelmis gibi yaptık.
+                context.Worker.Attach(worker); //Durumu : Unchanged
+                worker.FirstName = "Yeni isim"; //Durumu : Modified 
+                //dikkat edilmesi gereken sadece FirstName kolonu güncellenecek. Diğer kolonlar update sorgusunda olmayacak.
+                context.SaveChanges();
+
+                ContactInfo contactInfo = new ContactInfo() { ContactInfoId = 11, Phone = "558", WorkerId = worker.WorkerId };
+                context.ContactInfo.Update(contactInfo);
+
+                context.SaveChanges();
+            }
         }
 
         private static void oneToOneExample()
