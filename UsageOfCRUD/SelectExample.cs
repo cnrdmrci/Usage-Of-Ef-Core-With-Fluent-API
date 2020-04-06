@@ -22,6 +22,56 @@ namespace EntityFrameworkCoreExamples.UsageExamples
             noTrackingSelect();
             rawSqlSelect();
             selectGetDataTable();
+
+            lazyLoadingSelect();
+            eagerLoadingSelect();
+            explicitLoadingSelect();
+        }
+
+        private static void lazyLoadingSelect()
+        {
+            //lazy loading nesnenin alt nesnelerinin ilk sorguda getirilmemesidir.
+            //Daha sonra gereken yerde çağırıldığında, veritabanından sorgulanarak getirilir.
+            //Default olarak lazy loading ef core kütüphanesine dahil değildir.
+            //Sebebi, bilmeyen kişilerin yanlışlıkla lazy loading kullanmasının istenmemesi.
+            //Lazy loading kullanmak için gerekli eklenti: Microsoft.EntityFrameworkCore.Proxies
+            using (var context = new WorkerContext())
+            {
+                List<Worker> worker = context.Worker.ToList(); //Contact info dolmayacak.
+                ContactInfo into = worker.First().ContactInfo; //Veritabanına sorgu atılacak.
+            }
+        }
+
+        private static void eagerLoadingSelect()
+        {
+            //eager loading nesnenin alt nesneleriyle beraber getirilmesidir.
+            //Getirilmesi istenen alt sınıfların include methoduyla dahil edilmesi gerekli.
+            using (var context = new WorkerContext())
+            {
+                context.ChangeTracker.LazyLoadingEnabled = false; //Lazy loading devredışı bırakıyoruz.
+                List<Worker> worker = context.Worker.ToList(); //Contact info dolu olacak.
+                ContactInfo into = worker.First().ContactInfo; //null gelecek.
+                //List<Worker> worker = context.Worker.Include(x => x.ContactInfo).ThenInclude(x=>x...).ToList();
+            }
+        }
+
+        private static void explicitLoadingSelect()
+        {
+            //explicit loading nesnenin alt nesenlerinin bilinçli olarak getirilmesidir.
+            //Getirilmesi istenen alt nesneyi load methoduyla çağırmamız gerekli.
+            //Tekil sınıfın getirilmesinde Reference kullanılır.
+            //Çoğul sınıfın getirilmesinde Collection kullanılır.
+            using (var context = new WorkerContext())
+            {
+                context.ChangeTracker.LazyLoadingEnabled = false; //Lazy loading devredışı bırakıyoruz.
+                List<Worker> worker = context.Worker.ToList(); //Contact info boş olacak.
+
+                //İlk elemanın contact info değeri boş ise veritabanından sorgulayıp getirecek.
+                if (!context.Entry(worker.First()).Reference(x => x.ContactInfo).IsLoaded)
+                    context.Entry(worker.First()).Reference(x => x.ContactInfo).Load();
+
+                ContactInfo into = worker.First().ContactInfo; //dolu olacak.
+            }
         }
 
         private static void normalSelect()
